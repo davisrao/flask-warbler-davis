@@ -2,11 +2,12 @@
 
 # run these tests like:
 # 
-# python -m unittest test_message_views.py
+# FLASK_ENV=production python -m unittest test_message_views.py
 #
 
 import os
 from unittest import TestCase
+
 
 from models import db, Message, User
 
@@ -63,13 +64,14 @@ class MessageViewTestCase(TestCase):
             # the rest of ours test
 
             resp = c.post("/messages/new", data={"text": "Hello"})
+            print("RESP", resp.data)
 
             # Make sure it redirects
             self.assertEqual(resp.status_code, 302)
 
             msg = Message.query.one()
             self.assertEqual(msg.text, "Hello")
-
+            
     def test_delete_message(self):
         """Can user delete a message?"""
 
@@ -97,3 +99,40 @@ class MessageViewTestCase(TestCase):
             # Make sure user.messages does not include our message.
             check_deletion = Message.query.get(message_id)
             self.assertEqual(check_deletion,None)
+    
+    def test_cant_add_if_logged_out(self):
+        """Can user add a message?"""
+
+        # Since we need to change the session to mimic logging in,
+        # we need to use the changing-session trick:
+
+        with self.client as c:
+
+            resp = c.post("/messages/new", data={"text": "Hello"},follow_redirects=True)
+            # print("RESP", resp.data)
+
+            # Make sure it gives us back 200 status code since we redirected
+            self.assertEqual(resp.status_code, 200)
+            # testing that we rendered the anonymous home page
+            self.assertTrue(b'New to Warbler?' in resp.data)
+            # print("MSG", msg)
+    
+    
+    def test_cant_delete_if_logged_out(self):
+        """Can user add a message?"""
+
+        # Since we need to change the session to mimic logging in,
+        # we need to use the changing-session trick:
+        msg = Message(text="hiya", user_id=self.testuser.id)
+        db.session.add(msg)
+        db.session.commit()
+        msg_id=msg.id
+
+        with self.client as c:
+
+            resp = c.post(f"/messages/{msg_id}/delete",follow_redirects=True)
+            # Make sure it gives us back 200 status code since we redirected
+            self.assertEqual(resp.status_code, 200)
+            # testing that we rendered the anonymous home page
+            self.assertTrue(b'New to Warbler?' in resp.data)
+

@@ -41,6 +41,14 @@
 
         {% endif %}
 
+        {% if g.user.id == message.user.id %}
+        <form method="POST" action="/messages/{{ message.id }}/delete">
+          {{ g.csrf_form.hidden_tag() }}
+          <button class="btn delete-btn btn-default">
+            <span class="fas fa-trash"> Delete</span>
+          </button>
+        </form>
+        {% endif %}
 
 
       </div>

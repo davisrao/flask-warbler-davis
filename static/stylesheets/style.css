@@ -419,6 +419,16 @@ p.card-bio {
   padding: 1rem;
   text-shadow: 0 0 8px #66757f;
 }
+.not-found-msg{
+  font-weight:bold;
+  font-size:2em;
+  text-align: center;
+}
+.not-found-link{
+  font-weight:bold;
+  font-size:1em;
+  text-align: center;
+}
 
 .home-hero .btn {
   text-shadow: none;
@@ -529,6 +539,12 @@ p.card-bio {
   top: 4px;
   right: 4px;
   z-index: 1;
+}
+
+.delete-btn{
+  position:absolute;
+  top:4px;
+  right:4px
 }
 
 .messages-like-bottom {

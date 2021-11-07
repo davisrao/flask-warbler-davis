@@ -69,11 +69,19 @@
           <form method="POST" action="/messages/likes/{{ msg.id }}">
             {{ g.csrf_form.hidden_tag() }}
             <button class="btn btn-default">
-              <span class="far fa-thumbs-up"></span>
+              <span class="far fa-thumbs-up">Like</span>
             </button>
           </form>
           {% endif %}
 
+          {% endif %}
+          {% if g.user.id == msg.user.id %}
+          <form method="POST" action="/messages/{{ msg.id }}/delete">
+            {{ g.csrf_form.hidden_tag() }}
+            <button class="btn delete-btn btn-default">
+              <span class="fas fa-trash"> Delete</span>
+            </button>
+          </form>
           {% endif %}
         </div>
       </li>

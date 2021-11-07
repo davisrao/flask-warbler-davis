@@ -2,7 +2,7 @@
 
 # run these tests like:
 #
-#    FLASK_ENV=production python -m unittest test_message_views.py
+#    FLASK_ENV=production python -m unittest test_user_views.py
 
 
 import os
@@ -114,4 +114,4 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 302)
             self.assertEqual(resp2.status_code, 302)
 
-
+    
