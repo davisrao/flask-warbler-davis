@@ -1,14 +1,14 @@
 """Message View tests."""
 
 # run these tests like:
+# 
+# python -m unittest test_message_views.py
 #
-#    FLASK_ENV=production python -m unittest test_message_views.py
-
 
 import os
 from unittest import TestCase
 
-from models import db, connect_db, Message, User
+from models import db, Message, User
 
 # BEFORE we import our app, let's set an environmental variable
 # to use a different database for tests (we need to do this
@@ -31,7 +31,6 @@ db.create_all()
 
 app.config['WTF_CSRF_ENABLED'] = False
 
-
 class MessageViewTestCase(TestCase):
     """Test views for messages."""
 
@@ -51,7 +50,7 @@ class MessageViewTestCase(TestCase):
         db.session.commit()
 
     def test_add_message(self):
-        """Can use add a message?"""
+        """Can user add a message?"""
 
         # Since we need to change the session to mimic logging in,
         # we need to use the changing-session trick:
@@ -72,7 +71,7 @@ class MessageViewTestCase(TestCase):
             self.assertEqual(msg.text, "Hello")
 
     def test_delete_message(self):
-        """Can use add a message?"""
+        """Can user delete a message?"""
 
         # Since we need to change the session to mimic logging in,
         # we need to use the changing-session trick:
@@ -87,10 +86,14 @@ class MessageViewTestCase(TestCase):
             c.post("/messages/new", data={"text": "Hello"})
 
             user = User.query.get(self.testuser.id)
-            message = user.messages.one()
-            resp = c.post(f'/messages/{message.id}/delete')})
+            message = user.messages[0]
+            message_id=message.id
+            print("MESSAGES BEFORE DELETE", user.messages[0])
 
-            # Make sure it redirects
+            resp = c.post(f"/messages/{message_id}/delete")
+
             self.assertEqual(resp.status_code, 302)
 
             # Make sure user.messages does not include our message.
+            check_deletion = Message.query.get(message_id)
+            self.assertEqual(check_deletion,None)

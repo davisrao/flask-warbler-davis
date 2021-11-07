@@ -201,6 +201,3 @@ class UserModelTestCase(TestCase):
 
         self.assertFalse(user_1.authenticate("123","pass1"))
 
-
-
-    #does user.authenticate find correct user or fail to authenticate when user not found based on UN / password

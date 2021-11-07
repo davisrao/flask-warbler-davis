@@ -8,7 +8,7 @@
 import os
 from unittest import TestCase
 
-from models import db, connect_db, Message, User
+from models import db, Message, User
 
 # BEFORE we import our app, let's set an environmental variable
 # to use a different database for tests (we need to do this
@@ -21,13 +21,12 @@ os.environ['DATABASE_URL'] = "postgresql:///warbler_test"
 
 from app import app, CURR_USER_KEY
 
-# Create our tables (we do this here, so we only create the tables
-# once for all tests --- in each test, we'll delete the data
-# and create fresh new clean test data
+# Create our tables once
+# after / before each we'll refresh the data inside
 
 db.create_all()
 
-# Don't have WTForms use CSRF at all, since it's a pain to test
+# Disabling WTForms CSRF for testing at all, since it causes problems
 
 app.config['WTF_CSRF_ENABLED'] = False
 

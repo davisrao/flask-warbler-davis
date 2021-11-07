@@ -290,7 +290,6 @@ def edit_user_profile():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    # breakpoint()
 
     form = EditUserForm(obj=g.user)
 
@@ -395,9 +394,9 @@ def messages_destroy(message_id):
 
     if form.validate_on_submit():
         msg = Message.query.get(message_id)
+        print("VALID", msg)
         db.session.delete(msg)
         db.session.commit()
-
     return redirect(f"/users/{g.user.id}")
 
 
@@ -414,9 +413,8 @@ def homepage():
     """
 
     if g.user:       
-        # followers = g.user.following, use list comprehension to get ids of those people plus themselves
-        # # then filter for message.user.followers are in that list
-        follower_ids = [u.id for u in g.user.following] + [g.user.id]
+
+        # follower_ids = [u.id for u in g.user.following] + [g.user.id]
 
         messages = (Message
                     .query

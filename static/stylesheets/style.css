@@ -236,6 +236,10 @@ nav + .container {
 .user-stats > .ml-auto {
   display: flex;
   align-items: center;
+
+}
+ul.user-stats.nav.stats-inline{
+  padding-left:150px;
 }
 
 .user-stats > .ml-auto .btn {
@@ -460,6 +464,7 @@ p.card-bio {
 #home-aside > .user-card .user-stats {
   display: flex;
   justify-content: space-around;
+
 }
 
 #home-aside > .user-card > div {
